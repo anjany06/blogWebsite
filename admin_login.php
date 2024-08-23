@@ -82,33 +82,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         color: #23527c;
     }
 
-    @media (max-width: 768px) {
+    @media only screen and (max-width: 768px) {
         form {
             max-width: 90%;
         }
 
         input[type="email"],
         input[type="password"] {
-            font-size: 16px;
+            font-size: 20px;
         }
 
         button[type="submit"] {
-            font-size: 16px;
+            font-size: 18px;
         }
     }
 
-    @media (max-width: 480px) {
+    @media only screen and (max-width: 480px) {
         form {
             max-width: 100%;
         }
 
         input[type="email"],
         input[type="password"] {
-            font-size: 14px;
+            font-size: 20px;
         }
 
         button[type="submit"] {
-            font-size: 14px;
+            font-size: 18px;
         }
     }
 </style>

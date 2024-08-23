@@ -42,6 +42,7 @@ if (isset($_GET['id'])) {
     <button type="submit" name="vote_type" value="upvote">Upvote</button>
     <button type="submit" name="vote_type" value="downvote">Downvote</button>
   </form>
+
 <?php endif; ?>
 <?php
 $upvotes = $pdo->prepare("SELECT COUNT(*) FROM votes WHERE blog_id = ? AND vote_type = 'upvote'");
@@ -55,6 +56,8 @@ $downvoteCount = $downvotes->fetchColumn();
 
 <p>Upvotes: <?= $upvoteCount; ?></p>
 <p>Downvotes: <?= $downvoteCount; ?></p>
+<a href="index.php"><button class="home">Back to Home</button></a>
+
 
 <style>
   body {
@@ -133,6 +136,16 @@ $downvoteCount = $downvotes->fetchColumn();
     margin-bottom: 10px;
   }
 
+  .home {
+    padding: 0.8rem;
+    color: #fff;
+    font-size: 1.5rem;
+    background-color: #2776ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
   @media (max-width: 768px) {
     .comments div {
       padding: 10px;
@@ -153,19 +166,19 @@ $downvoteCount = $downvotes->fetchColumn();
 
   @media (max-width: 480px) {
     .comments div {
-      padding: 5px;
+      padding: 10px;
     }
 
     form textarea {
-      height: 60px;
+      height: 80px;
     }
 
     form button[type="submit"] {
-      padding: 10px 10px;
+      padding: 10px 15px;
     }
 
     form.vote-buttons button[type="submit"] {
-      padding: 10px 10px;
+      padding: 10px 15px;
     }
   }
 </style>
