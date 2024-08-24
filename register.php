@@ -9,9 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   // Validate the input fields
   if (empty($username) || empty($email) || empty($password)) {
     echo 'Please fill in all fields.';
-  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  } elseif
+  //checks if email is valid
+  (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo 'Invalid email address.';
   } else {
+    //hashes the password
     $password = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
@@ -136,16 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     form {
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-      transition: border-color 0.2s ease;
-    }
-
-    button[type="submit"] {
-      transition: background-color 0.2s ease;
     }
   </style>
 </head>

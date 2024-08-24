@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($admin && password_verify($password, $admin['password'])) {
         $_SESSION['user_id'] = $admin['id'];
         $_SESSION['username'] = $admin['username'];
+        //checks the role to ensure admin access
         $_SESSION['role'] = $admin['role'];
         header('Location: dashboard.php');
         exit();
@@ -21,12 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+<h1> ADMIN LOGIN</h1>
 <form method="post" action="admin_login.php">
     <input type="email" name="email" placeholder="Admin Email" required>
     <input type="password" name="password" placeholder="Password" required>
     <button type="submit">Login</button>
 </form>
 <style>
+    h1 {
+        text-align: center;
+        font-size: 2rem;
+    }
+
     form {
         max-width: 300px;
         margin: 40px auto;
@@ -111,5 +118,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 18px;
         }
     }
-</style>
 </style>

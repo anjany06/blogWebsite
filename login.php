@@ -3,14 +3,17 @@ session_start();
 include('db.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  //Added @ to suppresss error messages and make it hidden
   @$email = $_POST['email'];
   @$password = $_POST['password'];
 
   $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+  // this prevents SQL injection
   $stmt->execute([$email]);
   $user = $stmt->fetch();
 
   if ($user && password_verify($password, $user['password'])) {
+    // sets session variables
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['username'] = $user['username'];
     $_SESSION['role'] = $user['role'];

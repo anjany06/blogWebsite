@@ -2,6 +2,7 @@
 session_start();
 include('db.php');
 
+//checks if variable is !set or role is !admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
     header('Location: index.php');
     exit();

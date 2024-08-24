@@ -30,18 +30,25 @@
 
   <main id="blogContainer" class="grid-container">
     <?php
+    // database connection file
     include('db.php');
-
+    // query to fetch all blogs with their author username
     $stmt = $pdo->query("SELECT blogs.*, users.username FROM blogs JOIN users ON blogs.author_id = users.id ORDER BY created_at DESC");
     $blogs = $stmt->fetchAll();
     ?>
-
-    <?php foreach ($blogs as $blog): ?>
+    <?php
+    // loop to fetch each blog from blogs array and display them in grid format 
+    foreach ($blogs as $blog): ?>
       <div>
-        <h2><?php echo $blog['title']; ?></h2>
-        <p>By <?php echo $blog['username']; ?> on <?php echo $blog['created_at']; ?></p>
+        <h2><?php
+        echo $blog['title']; ?></h2>
+        <p>By <?php
+        // to print blog author along with time of creation
+        echo $blog['username']; ?> on <?php echo $blog['created_at']; ?></p>
         <p><?php echo substr($blog['content'], 0, 150); ?>...</p>
-        <a href="blog_details.php?id=<?php echo $blog['id']; ?>">Read More</a>
+        <a href="blog_details.php?id=<?php
+        // link to see the entire blog and to up or downVote and to add a comment 
+        echo $blog['id']; ?>">Read More</a>
       </div>
     <?php endforeach; ?>
 

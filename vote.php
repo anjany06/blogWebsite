@@ -8,10 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $vote_type = $_POST['vote_type'];
         $user_id = $_SESSION['user_id'];
 
+
+        //first select votes
         $stmt = $pdo->prepare("SELECT * FROM votes WHERE blog_id = ? AND user_id = ?");
         $stmt->execute([$blog_id, $user_id]);
         $vote = $stmt->fetch();
 
+        //if vote exists, update it, else add a new vote
         if ($vote) {
             $stmt = $pdo->prepare("UPDATE votes SET vote_type = ? WHERE id = ?");
             $stmt->execute([$vote_type, $vote['id']]);

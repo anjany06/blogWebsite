@@ -17,6 +17,7 @@ if (isset($_GET['id'])) {
         exit();
     }
 
+    //check if form submitted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $title = $_POST['title'];
         $content = $_POST['content'];
@@ -29,7 +30,8 @@ if (isset($_GET['id'])) {
     }
 }
 ?>
-<div class="edit_post-container">
+<div class="edit-post-container">
+    <h1>Edit Post</h1>
     <form method="post" action="">
         <input type="text" name="title" value="<?php echo $blog['title']; ?>" required>
         <textarea name="content" required><?php echo $blog['content']; ?></textarea>
@@ -43,7 +45,7 @@ if (isset($_GET['id'])) {
     }
 
     .edit-post-container {
-        max-width: 600px;
+        max-width: 700px;
         margin: 40px auto;
         padding: 20px;
         background-color: #fff;

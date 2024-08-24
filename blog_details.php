@@ -2,41 +2,49 @@
 include('db.php');
 
 session_start();
+//checks if variable is set with the an id showing on url
 if (isset($_GET['id'])) {
   $stmt = $pdo->prepare("SELECT blogs.*, users.username FROM blogs JOIN users ON blogs.author_id = users.id WHERE blogs.id = ?");
   $stmt->execute([$_GET['id']]);
+  // fetch the blog
   $blog = $stmt->fetch();
 
   if (!$blog) {
     echo 'Blog not found!';
     exit();
   }
+  //prepare a statement to fetch all comments of that blog
 
   $commentStmt = $pdo->prepare("SELECT comments.*, users.username FROM comments JOIN users ON comments.author_id = users.id WHERE blog_id = ?");
   $commentStmt->execute([$_GET['id']]);
+  //fetch all the comments of that blog
   $comments = $commentStmt->fetchAll();
 }
 ?>
 
-<h2><?= htmlspecialchars($blog['title']); ?></h2>
-<p>By <?= htmlspecialchars($blog['username']); ?> on <?php echo $blog['created_at']; ?></p>
-<p><?= htmlspecialchars($blog['content']); ?></p>
+<h2><?= $blog['title']; ?></h2>
+<p>By <?= $blog['username']; ?> on <?php echo $blog['created_at']; ?></p>
+<p><?= $blog['content']; ?></p>
 
 <h3>Comments</h3>
 <?php foreach ($comments as $comment): ?>
   <div class="comments">
-    <p><?= htmlspecialchars($comment['username']); ?>: <?php echo $comment['content']; ?></p>
+    <p><?= $comment['username']; ?>: <?php echo $comment['content']; ?></p>
   </div>
 <?php endforeach; ?>
 
-<?php if (isset($_SESSION['user_id'])): ?>
+<?php
+//checks the user to add comments
+if (isset($_SESSION['user_id'])): ?>
   <form method="post" action="add_comment.php">
     <input type="hidden" name="blog_id" value="<?php echo $blog['id']; ?>">
     <textarea name="content" placeholder="Write a comment..." required></textarea>
     <button type="submit">Post Comment</button>
   </form>
 <?php endif; ?>
-<?php if (isset($_SESSION['user_id'])): ?>
+<?php
+//checks the user to up and down vote
+if (isset($_SESSION['user_id'])): ?>
   <form method="post" action="vote.php">
     <input type="hidden" name="blog_id" value="<?php echo $blog['id']; ?>">
     <button type="submit" name="vote_type" value="upvote">Upvote</button>
@@ -45,10 +53,12 @@ if (isset($_GET['id'])) {
 
 <?php endif; ?>
 <?php
+//select upvotes for each blog
 $upvotes = $pdo->prepare("SELECT COUNT(*) FROM votes WHERE blog_id = ? AND vote_type = 'upvote'");
 $upvotes->execute([$blog['id']]);
+//fetch the number
 $upvoteCount = $upvotes->fetchColumn();
-
+//selec downtvotes for each blog
 $downvotes = $pdo->prepare("SELECT COUNT(*) FROM votes WHERE blog_id = ? AND vote_type = 'downvote'");
 $downvotes->execute([$blog['id']]);
 $downvoteCount = $downvotes->fetchColumn();
@@ -74,12 +84,6 @@ $downvoteCount = $downvotes->fetchColumn();
     font-size: 16px;
     color: #666;
     margin-bottom: 20px;
-  }
-
-  p.blog-content {
-    font-size: 18px;
-    line-height: 1.5;
-    margin-bottom: 30px;
   }
 
   h3 {
@@ -113,29 +117,6 @@ $downvoteCount = $downvotes->fetchColumn();
     background-color: #2776ff89;
   }
 
-  form.vote-buttons {
-    margin-bottom: 30px;
-  }
-
-  form.vote-buttons button[type="submit"] {
-    background-color: #2776ff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-
-  form.vote-buttons button[type="submit"]:hover {
-    background-color: #2776ff89;
-  }
-
-  p.vote-counts {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-
   .home {
     padding: 0.8rem;
     color: #fff;
@@ -158,10 +139,6 @@ $downvoteCount = $downvotes->fetchColumn();
     form button[type="submit"] {
       padding: 10px 15px;
     }
-
-    form.vote-buttons button[type="submit"] {
-      padding: 10px 15px;
-    }
   }
 
   @media (max-width: 480px) {
@@ -174,10 +151,6 @@ $downvoteCount = $downvotes->fetchColumn();
     }
 
     form button[type="submit"] {
-      padding: 10px 15px;
-    }
-
-    form.vote-buttons button[type="submit"] {
       padding: 10px 15px;
     }
   }
